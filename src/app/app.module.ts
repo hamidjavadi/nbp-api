@@ -7,6 +7,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
+import { reducers, metaReducers } from './store';
+import * as fromCurrency from './store/currency/currency.reducer';
+import { CurrencyEffects } from './store/currency/currency.effects';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,11 @@ import { EffectsModule } from '@ngrx/effects';
     AppRoutingModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreModule.forFeature(fromCurrency.currencyFeatureKey, fromCurrency.currencyReducer),
+    EffectsModule.forFeature([CurrencyEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
