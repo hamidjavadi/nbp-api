@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './store';
 import * as fromCurrency from './store/currency/currency.reducer';
 import { CurrencyEffects } from './store/currency/currency.effects';
+import { ErrorHandlerService } from './services/error-handler.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,9 @@ import { CurrencyEffects } from './store/currency/currency.effects';
     StoreModule.forFeature(fromCurrency.currencyFeatureKey, fromCurrency.currencyReducer),
     EffectsModule.forFeature([CurrencyEffects])
   ],
-  providers: [],
+  providers: [
+    { provide: ErrorHandler, useClass: ErrorHandlerService }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
