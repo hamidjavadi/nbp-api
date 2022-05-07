@@ -107,5 +107,8 @@
       }
     }
   },
-  "defaultProject": "nbp"
+  "defaultProject": "nbp",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
