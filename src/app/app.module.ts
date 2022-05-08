@@ -69,8 +69,8 @@ import { ErrorHandlerService } from './services/error-handler.service';
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreModule.forFeature(appFeatureKey, appReducer),
     TableModule,
-    StoreModule.forFeature(appFeatureKey, appReducer)
   ],
   providers: [
     { provide: ErrorHandler, useClass: ErrorHandlerService }

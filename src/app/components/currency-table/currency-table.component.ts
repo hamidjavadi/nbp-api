@@ -4,6 +4,7 @@ import { loadCurrencies } from 'src/app/store/currency/currency.actions';
 import { selectCurrencies, selectCurrenciesIsLoading, selectFirstFetch } from 'src/app/store/currency/currency.selectors';
 import { Store } from '@ngrx/store';
 import { Table } from 'primeng/table';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-currency-table',
@@ -18,7 +19,8 @@ export class CurrencyTableComponent implements OnInit {
   filterDate: any;
 
   constructor(
-    private store: Store
+    private store: Store,
+    private dateService: DateService
   ) { }
 
   ngOnInit(): void {
@@ -48,6 +50,11 @@ export class CurrencyTableComponent implements OnInit {
 
   filterDateChanged(value: Date) {
     try {
+
+      if (this.dateService.isValidDate(value) === false) {
+        throw new Error("Invalid_Selected_Date");
+      }
+
       this.store.dispatch(loadCurrencies({
         isLoading: true,
         table: 'A',
@@ -55,6 +62,8 @@ export class CurrencyTableComponent implements OnInit {
       }));
     } catch (error) {
       // TODO: Error Service
+      console.log(error);
+
     }
   }
 
