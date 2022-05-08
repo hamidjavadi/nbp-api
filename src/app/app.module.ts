@@ -1,25 +1,29 @@
-import { ErrorHandler, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { environment } from '../environments/environment';
-import { ErrorHandlerService } from './services/error-handler.service';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // Components
 import { AppComponent } from './components/app/app.component';
 import { CurrencyTableComponent } from './components/currency-table/currency-table.component';
-
-// Currency store
-import { CurrencyEffects } from './store/currency/currency.effects';
-import { currencyFeatureKey, currencyReducer } from './store/currency/currency.reducer';
+import { ThemeSwitcherComponent } from './components/theme-switcher/theme-switcher.component';
 
 // Store
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+// Currency store
+import { CurrencyEffects } from './store/currency/currency.effects';
+import { currencyFeatureKey, currencyReducer } from './store/currency/currency.reducer';
+
+// App Store
+import { appFeatureKey, appReducer } from './store/app/app.reducer';
+import { AppEffects } from './store/app/app.effects';
 
 // Pages
 import { AboutComponent } from './pages/about/about.component';
@@ -30,7 +34,10 @@ import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
-// import {  } from 'primeicons';
+
+// Services
+import { ErrorHandlerService } from './services/error-handler.service';
+
 
 @NgModule({
   declarations: [
@@ -38,13 +45,15 @@ import { TableModule } from 'primeng/table';
     AppComponent,
     IndexComponent,
     CurrencyTableComponent,
+    ThemeSwitcherComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
-    EffectsModule.forFeature([CurrencyEffects]),
+    FormsModule,
+    EffectsModule.forFeature([CurrencyEffects, AppEffects]),
     EffectsModule.forRoot([]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     HttpClientModule,
@@ -54,7 +63,8 @@ import { TableModule } from 'primeng/table';
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    TableModule
+    TableModule,
+    StoreModule.forFeature(appFeatureKey, appReducer)
   ],
   providers: [
     { provide: ErrorHandler, useClass: ErrorHandlerService }

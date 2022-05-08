@@ -31,7 +31,22 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "bundleName": "mdc-light",
+                "inject": false,
+                "input": "node_modules/primeng/resources/themes/mdc-light-indigo/theme.css"
+              },
+              {
+                "bundleName": "mdc-dark",
+                "inject": false,
+                "input": "node_modules/primeng/resources/themes/mdc-dark-indigo/theme.css"
+              },
+              {
+                "bundleName": "primeflex",
+                "inject": true,
+                "input": "node_modules/primeflex/primeflex.css"
+              }
             ],
             "scripts": []
           },
