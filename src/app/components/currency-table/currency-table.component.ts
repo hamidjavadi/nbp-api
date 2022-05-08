@@ -39,4 +39,16 @@ export class CurrencyTableComponent implements OnInit {
     })
   }
 
+  filterDateChanged(value: Date) {
+    try {
+      this.store.dispatch(loadCurrencies({
+        isLoading: true,
+        table: 'A',
+        date: value
+      }));
+    } catch (error) {
+      // TODO: Error Service
+    }
+  }
+
 }

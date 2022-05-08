@@ -7,7 +7,7 @@
       <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"></button>
       <span class="p-input-icon-left p-ml-auto">
         <p-calendar [(ngModel)]="filterDate" [showIcon]="true" inputId="icon" dateFormat="yy/mm/dd"
-          [readonlyInput]="true"></p-calendar>
+          [readonlyInput]="true" (onSelect)="filterDateChanged($event)"></p-calendar>
       </span>
     </div>
   </ng-template>
