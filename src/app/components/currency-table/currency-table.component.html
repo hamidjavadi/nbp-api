@@ -1,0 +1,24 @@
+<p-table [value]="currencies" styleClass="p-datatable-gridlines" responsiveLayout="scroll" [rows]="10"
+  [paginator]="true" [rowsPerPageOptions]="[10,25,50]" [showCurrentPageReport]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [loading]="isLoading">
+  <ng-template pTemplate="caption">
+    Filter and date
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Symbol waluty</th>
+      <th>Waluta</th>
+      <th>Kurs waluty</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-currency>
+    <tr>
+      <td>{{currency.code}}</td>
+      <td>{{currency.currency}}</td>
+      <td>{{currency.mid}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft">
+    A Theme Swicher
+  </ng-template>
+</p-table>

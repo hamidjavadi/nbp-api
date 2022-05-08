@@ -5,10 +5,11 @@ import { ICurrencyState } from './types';
 export const currencyFeatureKey = 'currency';
 export const initialState: ICurrencyState = {
   currencies: [],
+  date: new Date(),
+  error: undefined,
+  firstFetch: true,
   isLoading: false,
   table: 'A',
-  date: new Date(),
-  error: undefined
 };
 
 export const currencyReducer = createReducer(
@@ -17,7 +18,7 @@ export const currencyReducer = createReducer(
     return { ...state, isLoading: action.isLoading, }
   }),
   on(CurrencyActions.loadCurrenciesSuccess, (state, action) => {
-    return { ...state, isLoading: false, currencies: action.currencies }
+    return { ...state, isLoading: false, currencies: action.currencies, firstFetch: action.firstFetch }
   }),
   on(CurrencyActions.loadCurrenciesFailure, (state, action) => {
     return { ...state, error: action.error }

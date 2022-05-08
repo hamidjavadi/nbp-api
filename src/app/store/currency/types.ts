@@ -2,10 +2,11 @@ import { Currency } from "src/app/types";
 
 export interface ICurrencyState {
   currencies: Currency[],
+  date: Date | null,
+  error: any,
+  firstFetch: boolean,
   isLoading: boolean,
   table: string,
-  date: Date | null,
-  error: any
 }
 
 export enum CurrencyActions {

@@ -40,7 +40,8 @@ export class CurrencyService {
 
           if (apiResponse[0]) {
             this.store.dispatch(loadCurrenciesSuccess({
-              currencies: apiResponse[0].rates
+              currencies: apiResponse[0].rates,
+              firstFetch: false
             }))
           }
         }).catch(error => {

@@ -13,7 +13,7 @@ export const loadCurrencies = createAction(
 
 export const loadCurrenciesSuccess = createAction(
   CurrencyActions.LoadCurrenciesSuccess,
-  props<{ currencies: Currency[] }>()
+  props<{ currencies: Currency[], firstFetch: boolean }>()
 );
 
 export const loadCurrenciesFailure = createAction(
