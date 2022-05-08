@@ -1,12 +1,11 @@
+import { Currency } from "src/app/types";
+
 export interface ICurrencyState {
   currencies: Currency[],
-  isLoading: boolean
-}
-
-export type Currency = {
-  currency: string,
-  code: string,
-  mid: number
+  isLoading: boolean,
+  table: string,
+  date: Date | null,
+  error: any
 }
 
 export enum CurrencyActions {

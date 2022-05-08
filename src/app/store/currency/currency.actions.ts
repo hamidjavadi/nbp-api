@@ -1,13 +1,19 @@
 import { createAction, props } from '@ngrx/store';
+import { Currency } from 'src/app/types';
 import { CurrencyActions } from './types';
 
 export const loadCurrencies = createAction(
-  CurrencyActions.LoadCurrencies
+  CurrencyActions.LoadCurrencies,
+  props<{
+    isLoading: boolean,
+    table?: string | null,
+    date?: Date | null
+  }>()
 );
 
 export const loadCurrenciesSuccess = createAction(
   CurrencyActions.LoadCurrenciesSuccess,
-  props<{ data: any }>()
+  props<{ currencies: Currency[] }>()
 );
 
 export const loadCurrenciesFailure = createAction(

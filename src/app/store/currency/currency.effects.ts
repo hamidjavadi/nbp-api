@@ -1,30 +1,30 @@
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap } from 'rxjs/operators';
-import { Observable, EMPTY, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import * as CurrencyActions from './currency.actions';
-
-
+import { CurrencyService } from 'src/app/services/currency.service';
 
 @Injectable()
 export class CurrencyEffects {
 
+  constructor(
+    private actions$: Actions,
+    private currencyService: CurrencyService,
+    private errorHandler: ErrorHandler
+  ) { }
+
   loadCurrencys$ = createEffect(() => {
     return this.actions$.pipe(
-
       ofType(CurrencyActions.loadCurrencies),
-      concatMap(() =>
-        /** An EMPTY observable only emits completion. Replace with your own observable API request */
-        EMPTY.pipe(
-          map(data => CurrencyActions.loadCurrenciesSuccess({ data })),
-          catchError(error => of(CurrencyActions.loadCurrenciesFailure({ error }))))
-      )
-    );
-  });
-
-
-
-  constructor(private actions$: Actions) { }
+      tap((action) => {
+        this.currencyService.loadCurrencies(action.table, action.date);
+      }),
+      ofType(CurrencyActions.loadCurrenciesFailure),
+      tap((action) => {
+        this.errorHandler.handleError(action.error);
+      })
+    )
+  }, { dispatch: false });
 
 }

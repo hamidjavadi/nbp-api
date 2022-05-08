@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { loadCurrenciesFailure, loadCurrenciesSuccess } from '../store/currency/currency.actions';
+import { ApiResponse } from '../types';
 import { dateFormatter } from '../utils/date-formatter';
 
 @Injectable({
@@ -8,7 +11,8 @@ import { dateFormatter } from '../utils/date-formatter';
 export class CurrencyService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private store: Store
   ) { }
 
   /**
@@ -18,7 +22,7 @@ export class CurrencyService {
    * @param date Date
    * @returns Void
    */
-  loadCurrencies(table: string = 'A', date: Date | null = null) {
+  loadCurrencies(table: string | null | undefined, date: Date | null | undefined) {
     try {
 
       let url = '';
@@ -30,11 +34,25 @@ export class CurrencyService {
         url = `https://api.nbp.pl/api/exchangerates/tables/${table}/${formattedDate}/?format=json`;
       }
 
-      this.httpClient.get(url)
-        .subscribe((response) => console.log(response));
+      this.httpClient.get(url).toPromise()
+        .then((response) => {
+          const apiResponse = response as ApiResponse[];
+
+          if (apiResponse[0]) {
+            this.store.dispatch(loadCurrenciesSuccess({
+              currencies: apiResponse[0].rates
+            }))
+          }
+        }).catch(error => {
+          this.store.dispatch(loadCurrenciesFailure({
+            error: error
+          }))
+        });
 
     } catch (error) {
-
+      this.store.dispatch(loadCurrenciesFailure({
+        error: error
+      }))
     }
   }
 
