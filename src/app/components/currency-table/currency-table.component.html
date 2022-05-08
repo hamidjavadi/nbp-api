@@ -5,12 +5,17 @@
   <!-- Caption -->
   <ng-template pTemplate="caption" let-table>
     <div class="flex justify-content-between">
+      <!-- Clear Filter Button -->
       <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
         (click)="clearFilter(currenciesTable)" [disabled]="!currenciesTable.filteredValue"></button>
+      <!-- /Clear Filter Button -->
+
+      <!-- Date Picker -->
       <span class="p-input-icon-left p-ml-auto">
         <p-calendar class="filter-calendar" [(ngModel)]="filterDate" [showIcon]="true" inputId="icon"
-          dateFormat="yy/mm/dd" [readonlyInput]="true" (onSelect)="filterDateChanged($event)"></p-calendar>
+          dateFormat="yy/mm/dd" [readonlyInput]="false" (onSelect)="filterDateChanged($event)"></p-calendar>
       </span>
+      <!-- /Date Picker -->
     </div>
   </ng-template>
   <!-- /Caption -->
