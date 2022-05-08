@@ -33,6 +33,8 @@ import { IndexComponent } from './pages/index/index.component';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
 
@@ -60,6 +62,8 @@ import { ErrorHandlerService } from './services/error-handler.service';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     HttpClientModule,
     MenubarModule,
+    MenuModule,
+    MultiSelectModule,
     SelectButtonModule,
     StoreModule.forFeature(currencyFeatureKey, currencyReducer),
     StoreModule.forRoot(reducers, { metaReducers }),
