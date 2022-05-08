@@ -31,6 +31,7 @@ import { IndexComponent } from './pages/index/index.component';
 
 // Primeng
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { MenubarModule } from 'primeng/menubar';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
@@ -52,6 +53,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
     BrowserAnimationsModule,
     BrowserModule,
     ButtonModule,
+    CalendarModule,
     FormsModule,
     EffectsModule.forFeature([CurrencyEffects, AppEffects]),
     EffectsModule.forRoot([]),

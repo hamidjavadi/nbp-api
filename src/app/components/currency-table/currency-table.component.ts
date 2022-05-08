@@ -13,6 +13,7 @@ export class CurrencyTableComponent implements OnInit {
 
   currencies: Currency[] = [];
   isLoading: boolean = false;
+  filterDate: any;
 
   constructor(
     private store: Store
