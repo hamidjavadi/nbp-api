@@ -32,6 +32,8 @@
             ],
             "styles": [
               "src/styles.scss",
+              "./node_modules/primeicons/primeicons.css",
+              "./node_modules/primeng/resources/primeng.min.css",
               {
                 "bundleName": "mdc-light",
                 "inject": false,
