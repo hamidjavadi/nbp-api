@@ -26,7 +26,7 @@ export class ErrorHandlerService implements ErrorHandler {
 
     const errorType = this.getErrorType(error);
 
-    if (errorType !== '') {
+    if (errorType) {
       let errorFromErrorList: ErrorMessage = this.findError(errorType);
       this.notificationService.showError(errorFromErrorList.summary, errorFromErrorList.detail, 'general');
     }
