@@ -34,6 +34,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
+import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -65,6 +66,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
     HttpClientModule,
     MenubarModule,
     MenuModule,
+    MessageModule,
     MultiSelectModule,
     SelectButtonModule,
     StoreModule.forFeature(currencyFeatureKey, currencyReducer),

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { addAppError } from '../store/app/app.actions';
 import { AppError } from '../store/app/types';
-import { loadCurrenciesSuccess } from '../store/currency/currency.actions';
+import { hideCurrenciesLoading, loadCurrenciesSuccess, removeAllCurrencies } from '../store/currency/currency.actions';
 import { ApiResponse } from '../types';
 import { dateFormatter } from '../utils/date-formatter';
 import { ErrorHandlerService } from './error-handler.service';
@@ -49,12 +49,20 @@ export class CurrencyService {
         }
       }, (httpError) => {
 
+        // Get the error and add it to the state
         const error = this.errorService.findError(httpError);
         const appError: AppError = { ...error, shown: false }
 
         this.store.dispatch(addAppError({
           error: { ...appError, shown: false },
-        }))
+        }));
+
+        // Check error and empty the currencies list if the error is 404
+        if (error.code === 'HttpErrorResponse_404') {
+          this.store.dispatch(removeAllCurrencies());
+        }
+
+        this.store.dispatch(hideCurrenciesLoading());
 
       });
   }

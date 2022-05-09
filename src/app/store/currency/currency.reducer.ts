@@ -15,7 +15,7 @@ export const initialState: ICurrencyState = {
 export const currencyReducer = createReducer(
   initialState,
   on(CurrencyActions.loadCurrencies, (state, action) => {
-    return { ...state, isLoading: action.isLoading, }
+    return { ...state }
   }),
   on(CurrencyActions.loadCurrenciesSuccess, (state, action) => {
     return { ...state, isLoading: false, currencies: action.currencies, firstFetch: action.firstFetch }
@@ -23,4 +23,13 @@ export const currencyReducer = createReducer(
   on(CurrencyActions.loadCurrenciesFailure, (state, action) => {
     return { ...state, error: action.error }
   }),
+  on(CurrencyActions.showCurrenciesLoading, (state) => {
+    return { ...state, isLoading: true }
+  }),
+  on(CurrencyActions.hideCurrenciesLoading, (state) => {
+    return { ...state, isLoading: false }
+  }),
+  on(CurrencyActions.removeAllCurrencies, (state) => {
+    return { ...state, currencies: [] }
+  })
 );

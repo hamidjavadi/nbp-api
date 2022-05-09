@@ -10,7 +10,10 @@ export interface ICurrencyState {
 }
 
 export enum CurrencyActions {
+  HideLoading = '[Currency] Hide Loading',
   LoadCurrencies = '[Currency] Load Currencies',
   LoadCurrenciesSuccess = '[Currency] Load Currencies Success',
-  LoadCurrenciesFailure = '[Currency] Load Currencies Failure'
+  LoadCurrenciesFailure = '[Currency] Load Currencies Failure',
+  RemoveAllCurrencies = '[Currency] Remove All Currencies',
+  ShowLoading = '[Currency] Show Loading',
 }

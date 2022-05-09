@@ -5,7 +5,6 @@ import { CurrencyActions } from './types';
 export const loadCurrencies = createAction(
   CurrencyActions.LoadCurrencies,
   props<{
-    isLoading: boolean,
     table?: string | null,
     date?: Date | null
   }>()
@@ -19,4 +18,16 @@ export const loadCurrenciesSuccess = createAction(
 export const loadCurrenciesFailure = createAction(
   CurrencyActions.LoadCurrenciesFailure,
   props<{ error: any }>()
+);
+
+export const showCurrenciesLoading = createAction(
+  CurrencyActions.ShowLoading
+);
+
+export const hideCurrenciesLoading = createAction(
+  CurrencyActions.HideLoading
+);
+
+export const removeAllCurrencies = createAction(
+  CurrencyActions.RemoveAllCurrencies
 );

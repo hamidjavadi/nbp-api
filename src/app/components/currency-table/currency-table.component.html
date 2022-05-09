@@ -76,6 +76,17 @@
   </ng-template>
   <!-- /Body -->
 
+  <!-- Empty Message-->
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="3">
+        <p-message severity="info" text="No records were found for the selected date!" styleClass="col-12 p-4">
+        </p-message>
+      </td>
+    </tr>
+  </ng-template>
+  <!-- /Empty Message-->
+
   <!-- Paginator -->
   <ng-template pTemplate="paginatorleft">
     <p class="font-bold">Wybierz widok</p>

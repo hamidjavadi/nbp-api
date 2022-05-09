@@ -30,7 +30,6 @@ export class CurrencyTableComponent implements OnInit {
     this.store.select(selectFirstFetch).subscribe((firstFetch) => {
       if (firstFetch === true) {
         this.store.dispatch(loadCurrencies({
-          isLoading: true,
           table: 'A'
         }));
       }
@@ -56,7 +55,6 @@ export class CurrencyTableComponent implements OnInit {
     }
 
     this.store.dispatch(loadCurrencies({
-      isLoading: true,
       table: 'A',
       date: value
     }));
