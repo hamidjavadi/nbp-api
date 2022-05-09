@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorHandler, Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ErrorHandler, Injectable, } from '@angular/core';
 
 import { ErrorMessage } from '../types';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class ErrorHandlerService implements ErrorHandler {
   errors: ErrorMessage[] = [];
 
   constructor(
-    private messageService: MessageService,
+    private notificationService: NotificationService
   ) {
     this.defineErrors();
   }
@@ -22,53 +22,15 @@ export class ErrorHandlerService implements ErrorHandler {
    *
    * @param error Error
    */
-  handleError(error: Error | HttpErrorResponse) {
+  handleError(error: any) {
 
-    let errorFromErrorList!: ErrorMessage;
-    errorFromErrorList = this.findError(error);
+    const errorType = this.getErrorType(error);
 
-    this.showError(errorFromErrorList.summary, errorFromErrorList.detail);
-
-  }
-
-  /**
-   * Shows an error dialog
-   *
-   * @param summary string
-   * @param detail string
-   */
-  showError(summary: string, detail: string) {
-    this.messageService.clear();
-    this.messageService.add({ severity: 'error', summary: summary, detail: detail, });
-  }
-
-  /**
-   * Finds an error from error list
-   *
-   * @param name string
-   * @returns
-   */
-  findError(error: Error | HttpErrorResponse): ErrorMessage {
-
-    let code: string = '';
-
-    if (error instanceof HttpErrorResponse) {
-      code = `${error.name}_${error.status}`;
-    } else {
-      code = error.name;
+    if (errorType !== '') {
+      let errorFromErrorList: ErrorMessage = this.findError(errorType);
+      this.notificationService.showError(errorFromErrorList.summary, errorFromErrorList.detail, 'general');
     }
 
-    let searchResult = this.errors.find(error => error.code === code);
-
-    if (!searchResult) {
-      searchResult = {
-        code: 'Unknown_Error',
-        summary: 'Unknown error occurred!',
-        detail: 'Please contact to administrator or try again later'
-      }
-    }
-
-    return searchResult;
   }
 
   /**
@@ -95,17 +57,60 @@ export class ErrorHandlerService implements ErrorHandler {
   }
 
   /**
+   * Finds an error from error list
+   *
+   * @param name string
+   * @returns ErrorMessage
+   */
+  findError(errorType: string = ''): ErrorMessage {
+
+    let searchResult = this.errors.find(error => error.code === errorType);
+
+    if (!searchResult) {
+      searchResult = {
+        code: 'Unknown_Error',
+        summary: 'Unknown error occurred!',
+        detail: 'Please contact to administrator or try again later'
+      }
+    }
+
+    return searchResult;
+  }
+
+  /**
    * Generates an Error from given name and message
    *
    * @param name string
    * @param message string
    * @returns Error
    */
-  generateError(name: string, message?: string): Error {
-    const error = new Error(message);
-    error.name = name;
+  generateError(name: string, message?: string): ErrorEvent {
+    const error = new ErrorEvent(name, {
+      message: message
+    });
 
     return error;
+  }
+
+  /**
+   * Get error type from the given error
+   *
+   * @param error
+   * @returns string | undefined
+   */
+  getErrorType(error: any) {
+    let errorType;
+
+    if (error instanceof ErrorEvent)  // User error
+      errorType = error.type;
+    else if (error instanceof HttpErrorResponse)  // Http error
+      errorType = `${error.name}_${error.status}`;
+    else if (error instanceof TypeError)  // Browser error
+      console.log(error.message);
+    else  //Unknown resource error
+      console.log(error);
+
+    return errorType;
   }
 
 }

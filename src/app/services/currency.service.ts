@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { throwError } from 'rxjs';
 import { addAppError } from '../store/app/app.actions';
 import { AppError } from '../store/app/types';
 import { hideCurrenciesLoading, loadCurrenciesSuccess, removeAllCurrencies } from '../store/currency/currency.actions';
@@ -49,21 +50,16 @@ export class CurrencyService {
         }
       }, (httpError) => {
 
-        // Get the error and add it to the state
-        const error = this.errorService.findError(httpError);
-        const appError: AppError = { ...error, shown: false }
+        const errorType = this.errorService.getErrorType(httpError);
 
-        this.store.dispatch(addAppError({
-          error: { ...appError, shown: false },
-        }));
-
-        // Check error and empty the currencies list if the error is 404
-        if (error.code === 'HttpErrorResponse_404') {
+        if (errorType === 'HttpErrorResponse_404') {
           this.store.dispatch(removeAllCurrencies());
         }
 
         this.store.dispatch(hideCurrenciesLoading());
-
+        // throw httpError;
+      }, () => {
+        this.store.dispatch(hideCurrenciesLoading());
       });
   }
 
