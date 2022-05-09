@@ -1,5 +1,6 @@
 export interface IAppState {
-  themes: Theme[]
+  themes: Theme[],
+  errors: AppError[]
 }
 
 export type Theme = {
@@ -8,6 +9,15 @@ export type Theme = {
   selected: boolean
 }
 
-export enum ThemeActions {
-  SetTheme = '[Theme] Set Theme'
+export enum AppActions {
+  SetTheme = '[App] Set Theme',
+  AddError = '[App] Add Error',
+  ErrorShown = '[App] Error Shown',
+}
+
+export type AppError = {
+  code: string,
+  detail: string,
+  summary: string,
+  shown: boolean
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ErrorHandler, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { ThemeService } from 'src/app/services/theme.service';
-import { setAppTheme } from 'src/app/store/app/app.actions';
-import { selectAppAllThemes, selectAppCurrentTheme } from 'src/app/store/app/app.selectors';
+import { AppErrorShown, setAppTheme } from 'src/app/store/app/app.actions';
+import { selectAppAllThemes, selectAppCurrentTheme, selectAppErrorsToShow } from 'src/app/store/app/app.selectors';
 import { Theme } from 'src/app/store/app/types';
 
 @Component({
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private errorService: ErrorHandlerService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +34,14 @@ export class AppComponent implements OnInit {
       } else {
         this.themeService.setApplicationTheme(theme.file);
       }
+    })
+
+    // Select and show application errors
+    this.store.select(selectAppErrorsToShow).subscribe((errors) => {
+      errors.forEach(error => {
+        this.errorService.showError(error.summary, error.detail);
+        this.store.dispatch(AppErrorShown({ error: error }));
+      })
     })
   }
 }

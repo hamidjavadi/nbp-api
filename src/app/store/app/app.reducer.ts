@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { setAppTheme } from './app.actions';
+import { addAppError, AppErrorShown, setAppTheme } from './app.actions';
 import { IAppState } from './types';
 
 export const appFeatureKey = 'app';
@@ -16,14 +16,15 @@ export const initialState: IAppState = {
       name: 'Jasny',
       selected: true,
     }
-  ]
+  ],
+  errors: []
 };
 
 export const appReducer = createReducer(
   initialState,
   on(setAppTheme, (state, action) => {
 
-    const { themes } = { ...state };
+    const { themes } = { ...state }
 
     const updatedThemes = themes.map((theme) => {
 
@@ -42,4 +43,23 @@ export const appReducer = createReducer(
 
     return { ...state, themes: updatedThemes }
   }),
+  on(addAppError, (state, action) => {
+    return { ...state, errors: [...state.errors, action.error] }
+  }),
+  on(AppErrorShown, (state, action) => {
+
+    const { errors } = { ...state };
+    const updatedErrors = errors.map((error) => {
+
+      const copiedError = { ...error };
+
+      if (copiedError.code === action.error.code && action.error.shown === false) {
+        copiedError.shown = true;
+      }
+
+      return copiedError;
+    })
+
+    return { ...state, errors: updatedErrors }
+  })
 );

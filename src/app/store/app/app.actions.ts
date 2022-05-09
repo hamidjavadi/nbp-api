@@ -1,7 +1,17 @@
 import { createAction, props } from '@ngrx/store';
-import { Theme, ThemeActions } from './types';
+import { Theme, AppActions, AppError } from './types';
 
 export const setAppTheme = createAction(
-  ThemeActions.SetTheme,
+  AppActions.SetTheme,
   props<{ theme: Theme }>()
+);
+
+export const addAppError = createAction(
+  AppActions.AddError,
+  props<{ error: AppError }>()
+);
+
+export const AppErrorShown = createAction(
+  AppActions.ErrorShown,
+  props<{ error: AppError }>()
 );

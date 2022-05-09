@@ -10,3 +10,9 @@ export type ApiResponse = {
   rates: Currency[],
   table: string
 }
+
+export type ErrorMessage = {
+  code: string,
+  detail: string,
+  summary: string,
+}

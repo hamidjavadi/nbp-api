@@ -34,9 +34,11 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { MenubarModule } from 'primeng/menubar';
 import { MenuModule } from 'primeng/menu';
+import { MessageService } from 'primeng/api';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
 
 // Services
 import { ErrorHandlerService } from './services/error-handler.service';
@@ -71,8 +73,10 @@ import { ErrorHandlerService } from './services/error-handler.service';
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     StoreModule.forFeature(appFeatureKey, appReducer),
     TableModule,
+    ToastModule,
   ],
   providers: [
+    MessageService,
     { provide: ErrorHandler, useClass: ErrorHandlerService }
   ],
   bootstrap: [AppComponent]

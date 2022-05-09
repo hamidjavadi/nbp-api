@@ -11,11 +11,7 @@ export class ThemeService {
   ) { }
 
   setApplicationTheme(file: string) {
-    try {
-      const themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
-      themeLink.href = file;
-    } catch (error) {
-      // TODO: Error Service
-    }
+    const themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
+    themeLink.href = file;
   }
 }

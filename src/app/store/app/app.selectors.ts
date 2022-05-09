@@ -16,3 +16,7 @@ export const selectAppAllThemes = createSelector(
   (state) => state.themes
 )
 
+export const selectAppErrorsToShow = createSelector(
+  selectAppState,
+  (state) => state.errors.filter((error) => error.shown === false)
+)

@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { loadCurrenciesFailure, loadCurrenciesSuccess } from '../store/currency/currency.actions';
+import { addAppError } from '../store/app/app.actions';
+import { AppError } from '../store/app/types';
+import { loadCurrenciesSuccess } from '../store/currency/currency.actions';
 import { ApiResponse } from '../types';
 import { dateFormatter } from '../utils/date-formatter';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,8 @@ export class CurrencyService {
 
   constructor(
     private httpClient: HttpClient,
-    private store: Store
+    private store: Store,
+    private errorService: ErrorHandlerService
   ) { }
 
   /**
@@ -23,38 +27,36 @@ export class CurrencyService {
    * @returns Void
    */
   loadCurrencies(table: string | null | undefined, date: Date | null | undefined) {
-    try {
 
-      let url = '';
+    let url = '';
 
-      if (!date) {
-        url = `https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`;
-      } else {
-        const formattedDate = dateFormatter(date);
-        url = `https://api.nbp.pl/api/exchangerates/tables/${table}/${formattedDate}/?format=json`;
-      }
-
-      this.httpClient.get(url).toPromise()
-        .then((response) => {
-          const apiResponse = response as ApiResponse[];
-
-          if (apiResponse[0]) {
-            this.store.dispatch(loadCurrenciesSuccess({
-              currencies: apiResponse[0].rates,
-              firstFetch: false
-            }))
-          }
-        }).catch(error => {
-          this.store.dispatch(loadCurrenciesFailure({
-            error: error
-          }))
-        });
-
-    } catch (error) {
-      this.store.dispatch(loadCurrenciesFailure({
-        error: error
-      }))
+    if (!date) {
+      url = `https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`;
+    } else {
+      const formattedDate = dateFormatter(date);
+      url = `https://api.nbp.pl/api/exchangerates/tables/${table}/${formattedDate}/?format=json`;
     }
+
+    this.httpClient.get(url).subscribe(
+      (response) => {
+        const apiResponse = response as ApiResponse[];
+
+        if (apiResponse[0]) {
+          this.store.dispatch(loadCurrenciesSuccess({
+            currencies: apiResponse[0].rates,
+            firstFetch: false
+          }))
+        }
+      }, (httpError) => {
+
+        const error = this.errorService.findError(httpError);
+        const appError: AppError = { ...error, shown: false }
+
+        this.store.dispatch(addAppError({
+          error: { ...appError, shown: false },
+        }))
+
+      });
   }
 
 }
