@@ -27,7 +27,7 @@ export class ErrorHandlerService implements ErrorHandler {
     let errorFromErrorList!: ErrorMessage;
     errorFromErrorList = this.findError(error);
 
-    this.messageService.add({ severity: 'error', summary: errorFromErrorList.summary, detail: errorFromErrorList.detail });
+    this.showError(errorFromErrorList.summary, errorFromErrorList.detail);
 
   }
 
@@ -39,7 +39,7 @@ export class ErrorHandlerService implements ErrorHandler {
    */
   showError(summary: string, detail: string) {
     this.messageService.clear();
-    this.messageService.add({ severity: 'error', summary: summary, detail: detail });
+    this.messageService.add({ severity: 'error', summary: summary, detail: detail, });
   }
 
   /**
