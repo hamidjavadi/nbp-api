@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, Injectable, } from '@angular/core';
 
-import { ErrorMessage } from '../types';
+import { ErrorCodes, ErrorMessage } from '../types';
 import { NotificationService } from './notification.service';
 
 @Injectable({
@@ -29,6 +29,8 @@ export class ErrorHandlerService implements ErrorHandler {
     if (errorType) {
       let errorFromErrorList: ErrorMessage = this.findError(errorType);
       this.notificationService.showError(errorFromErrorList.summary, errorFromErrorList.detail, 'general');
+    } else {
+      // TODO Send error to the error logger service of the company
     }
 
   }
@@ -40,17 +42,17 @@ export class ErrorHandlerService implements ErrorHandler {
   private defineErrors() {
     this.errors.push(
       {
-        code: 'Invalid_Selected_Date',
+        code: ErrorCodes.Invalid_Selected_Date,
         summary: 'Selected date is not valid',
         detail: 'Make sure the date doesn\'t refer to the future or to more than 93 days ago!'
       },
       {
-        code: 'HttpErrorResponse_0',
+        code: ErrorCodes.HttpErrorResponse_0,
         summary: 'No Internet!',
         detail: 'Check your internet connection and try again!'
       },
       {
-        code: 'HttpErrorResponse_404',
+        code: ErrorCodes.HttpErrorResponse_404,
         summary: '404 Not Found!',
         detail: 'There is not any currency record on the selected date!'
       });

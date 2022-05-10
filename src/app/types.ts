@@ -16,3 +16,9 @@ export type ErrorMessage = {
   detail: string,
   summary: string,
 }
+
+export enum ErrorCodes {
+  Invalid_Selected_Date = 'Invalid_Selected_Date',
+  HttpErrorResponse_0 = 'HttpErrorResponse_0',
+  HttpErrorResponse_404 = 'HttpErrorResponse_404'
+}

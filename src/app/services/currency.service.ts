@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { hideCurrenciesLoading, loadCurrenciesSuccess, removeAllCurrencies } from '../store/currency/currency.actions';
-import { ApiResponse } from '../types';
+import { ApiResponse, ErrorCodes } from '../types';
 import { DateService } from './date.service';
 import { ErrorHandlerService } from './error-handler.service';
 
@@ -35,7 +35,7 @@ export class CurrencyService {
 
       // Validate the date before sending the request
       if (this.dateService.isValidDate(date) === false) {
-        throw new ErrorEvent("Invalid_Selected_Date");
+        throw new ErrorEvent(ErrorCodes.Invalid_Selected_Date);
       }
 
       const formattedDate = this.dateService.formatDate(date);
@@ -56,7 +56,7 @@ export class CurrencyService {
 
         const errorType = this.errorService.getErrorType(httpError);
 
-        if (errorType === 'HttpErrorResponse_404') {
+        if (errorType === ErrorCodes.HttpErrorResponse_404) {
           this.store.dispatch(removeAllCurrencies());
         }
 

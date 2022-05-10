@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Currency } from 'src/app/types';
+import { Currency, ErrorCodes } from 'src/app/types';
 import { loadCurrencies } from 'src/app/store/currency/currency.actions';
 import { selectCurrencies, selectCurrenciesIsLoading, selectFirstFetch } from 'src/app/store/currency/currency.selectors';
 import { Store } from '@ngrx/store';
@@ -49,7 +49,7 @@ export class CurrencyTableComponent implements OnInit {
 
   filterDateChanged(value: Date) {
     if (this.dateService.isValidDate(value) === false) {
-      throw new ErrorEvent('Invalid_Selected_Date');
+      throw new ErrorEvent(ErrorCodes.Invalid_Selected_Date);
     }
 
     this.store.dispatch(loadCurrencies({
