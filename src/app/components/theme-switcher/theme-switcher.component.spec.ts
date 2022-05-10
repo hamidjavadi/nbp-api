@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 
 import { ThemeSwitcherComponent } from './theme-switcher.component';
 
@@ -8,9 +10,13 @@ describe('ThemeSwitcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ThemeSwitcherComponent ]
+      imports: [
+        RouterTestingModule,
+        StoreModule.forRoot({}, {})
+      ],
+      declarations: [ThemeSwitcherComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

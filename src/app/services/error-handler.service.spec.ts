@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { MessageService } from 'primeng/api';
 
 import { ErrorHandlerService } from './error-handler.service';
 
@@ -6,11 +7,15 @@ describe('ErrorHandlerService', () => {
   let service: ErrorHandlerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        MessageService
+      ]
+    });
     service = TestBed.inject(ErrorHandlerService);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(service).toBeInstanceOf(ErrorHandlerService);
   });
 });

@@ -11,7 +11,7 @@ import { Theme } from 'src/app/store/app/types';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'nbp';
+  title = 'Nbp API';
 
   appAllThemes: Theme[] = [];
 

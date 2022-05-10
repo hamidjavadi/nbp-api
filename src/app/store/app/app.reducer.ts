@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { addAppError, AppErrorShown, setAppTheme } from './app.actions';
+import { addAppError, appErrorShown, setAppTheme } from './app.actions';
 import { IAppState } from './types';
 
 export const appFeatureKey = 'app';
@@ -46,7 +46,7 @@ export const appReducer = createReducer(
   on(addAppError, (state, action) => {
     return { ...state, errors: [...state.errors, action.error] }
   }),
-  on(AppErrorShown, (state, action) => {
+  on(appErrorShown, (state, action) => {
 
     const { errors } = { ...state };
     const updatedErrors = errors.map((error) => {

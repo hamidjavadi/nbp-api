@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
 
 import { CurrencyTableComponent } from './currency-table.component';
 
@@ -8,9 +10,13 @@ describe('CurrencyTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CurrencyTableComponent ]
+      imports: [
+        RouterTestingModule,
+        StoreModule.forRoot({}, {})
+      ],
+      declarations: [CurrencyTableComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -20,6 +26,6 @@ describe('CurrencyTableComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeInstanceOf(CurrencyTableComponent);
   });
 });

@@ -11,7 +11,7 @@ export const addAppError = createAction(
   props<{ error: AppError }>()
 );
 
-export const AppErrorShown = createAction(
+export const appErrorShown = createAction(
   AppActions.ErrorShown,
   props<{ error: AppError }>()
 );
