@@ -1,12 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { throwError } from 'rxjs';
-import { addAppError } from '../store/app/app.actions';
-import { AppError } from '../store/app/types';
 import { hideCurrenciesLoading, loadCurrenciesSuccess, removeAllCurrencies } from '../store/currency/currency.actions';
 import { ApiResponse } from '../types';
-import { dateFormatter } from '../utils/date-formatter';
+import { DateService } from './date.service';
 import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
@@ -15,9 +12,10 @@ import { ErrorHandlerService } from './error-handler.service';
 export class CurrencyService {
 
   constructor(
+    private dateService: DateService,
+    private errorService: ErrorHandlerService,
     private httpClient: HttpClient,
     private store: Store,
-    private errorService: ErrorHandlerService
   ) { }
 
   /**
@@ -34,7 +32,13 @@ export class CurrencyService {
     if (!date) {
       url = `https://api.nbp.pl/api/exchangerates/tables/${table}/?format=json`;
     } else {
-      const formattedDate = dateFormatter(date);
+
+      // Validate the date before sending the request
+      if (this.dateService.isValidDate(date) === false) {
+        throw new ErrorEvent("Invalid_Selected_Date");
+      }
+
+      const formattedDate = this.dateService.formatDate(date);
       url = `https://api.nbp.pl/api/exchangerates/tables/${table}/${formattedDate}/?format=json`;
     }
 
@@ -57,7 +61,6 @@ export class CurrencyService {
         }
 
         this.store.dispatch(hideCurrenciesLoading());
-        // throw httpError;
       }, () => {
         this.store.dispatch(hideCurrenciesLoading());
       });
