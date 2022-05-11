@@ -58,9 +58,12 @@ export class CurrencyService {
 
         if (errorType === ErrorCodes.HttpErrorResponse_404) {
           this.store.dispatch(removeAllCurrencies());
+          this.store.dispatch(hideCurrenciesLoading());
+        } else {
+          this.store.dispatch(hideCurrenciesLoading());
+          throw httpError;
         }
 
-        this.store.dispatch(hideCurrenciesLoading());
       }, () => {
         this.store.dispatch(hideCurrenciesLoading());
       });
