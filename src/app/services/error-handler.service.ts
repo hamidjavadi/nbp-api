@@ -28,7 +28,16 @@ export class ErrorHandlerService implements ErrorHandler {
 
     if (errorType) {
       let errorFromErrorList: ErrorMessage = this.findError(errorType);
-      this.notificationService.showError(errorFromErrorList.summary, errorFromErrorList.detail, 'general');
+
+      let errorSummary = '';
+
+      if (errorFromErrorList.showApiError === true) {
+        errorSummary = error.error;
+      } else {
+        errorSummary = errorFromErrorList.summary;
+      }
+
+      this.notificationService.showError(errorFromErrorList.summary, errorSummary, 'general');
     } else {
       // TODO Send error to the error logger service of the company
     }
@@ -44,17 +53,26 @@ export class ErrorHandlerService implements ErrorHandler {
       {
         code: ErrorCodes.Invalid_Selected_Date,
         summary: 'Selected date is not valid',
-        detail: 'Make sure the date doesn\'t refer to the future or to more than 93 days ago!'
+        detail: 'Make sure the date doesn\'t refer to the future or to more than 93 days ago!',
+        showApiError: false
       },
       {
         code: ErrorCodes.HttpErrorResponse_0,
         summary: 'No Internet!',
-        detail: 'Check your internet connection and try again!'
+        detail: 'Check your internet connection and try again!',
+        showApiError: false
       },
       {
         code: ErrorCodes.HttpErrorResponse_404,
         summary: '404 Not Found!',
-        detail: 'There is not any currency record on the selected date!'
+        detail: 'There is not any currency record on the selected date!',
+        showApiError: false
+      },
+      {
+        code: ErrorCodes.HttpErrorResponse_400,
+        summary: '404 Bad Request!',
+        detail: 'The request is not good!',
+        showApiError: true
       });
   }
 
@@ -72,7 +90,8 @@ export class ErrorHandlerService implements ErrorHandler {
       searchResult = {
         code: 'Unknown_Error',
         summary: 'Unknown error occurred!',
-        detail: 'Please contact to administrator or try again later'
+        detail: 'Please contact to administrator or try again later',
+        showApiError: false
       }
     }
 
