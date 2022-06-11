@@ -56,7 +56,7 @@ import { ErrorHandlerService } from './services/error-handler.service';
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     ButtonModule,
     CalendarModule,
     FormsModule,
