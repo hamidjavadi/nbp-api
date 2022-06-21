@@ -1,17 +1,27 @@
 import { DOCUMENT } from '@angular/common';
+import { LifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
 import { Inject, Injectable } from '@angular/core';
+import { Theme } from '../store/app/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  constructor(
-    @Inject(DOCUMENT) private document: Document
-  ) { }
+  setApplicationTheme(theme: Theme) {
+    this.document.querySelectorAll('.css-theme').forEach((item) => {
+      const stylesheet = item as unknown as StyleSheet;
+      const htmlElement = item as HTMLElement;
+      const dataset = htmlElement.dataset;
 
-  setApplicationTheme(file: string) {
-    const themeLink = this.document.getElementById('app-theme') as HTMLLinkElement;
-    themeLink.href = file;
+      if (dataset['name']) {
+        if (dataset['name'] === theme.name) {
+          stylesheet.disabled = false;
+        } else {
+          stylesheet.disabled = true;
+        }
+      }
+    });
   }
 }
