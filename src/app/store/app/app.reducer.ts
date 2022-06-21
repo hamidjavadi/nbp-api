@@ -9,25 +9,23 @@ export const initialState: IAppState = {
     {
       file: 'mdc-dark.css',
       name: 'Ciemny',
-      selected: false
+      selected: false,
     },
     {
       file: 'mdc-light.css',
       name: 'Jasny',
       selected: true,
-    }
+    },
   ],
-  errors: []
+  errors: [],
 };
 
 export const appReducer = createReducer(
   initialState,
   on(setAppTheme, (state, action) => {
-
-    const { themes } = { ...state }
+    const { themes } = { ...state };
 
     const updatedThemes = themes.map((theme) => {
-
       const copiedTheme = { ...theme };
 
       // Set all theme to unselected
@@ -39,27 +37,28 @@ export const appReducer = createReducer(
       }
 
       return copiedTheme;
-    })
+    });
 
-    return { ...state, themes: updatedThemes }
+    return { ...state, themes: updatedThemes };
   }),
   on(addAppError, (state, action) => {
-    return { ...state, errors: [...state.errors, action.error] }
+    return { ...state, errors: [...state.errors, action.error] };
   }),
   on(appErrorShown, (state, action) => {
-
     const { errors } = { ...state };
     const updatedErrors = errors.map((error) => {
-
       const copiedError = { ...error };
 
-      if (copiedError.code === action.error.code && action.error.shown === false) {
+      if (
+        copiedError.code === action.error.code &&
+        action.error.shown === false
+      ) {
         copiedError.shown = true;
       }
 
       return copiedError;
-    })
+    });
 
-    return { ...state, errors: updatedErrors }
+    return { ...state, errors: updatedErrors };
   })
 );
